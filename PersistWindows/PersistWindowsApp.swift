@@ -18,16 +18,13 @@ struct PersistWindowsApp: App {
                 .environment(appModel)
         }
 
-        ImmersiveSpace(id: appModel.immersiveSpaceID) {
-            ImmersiveView()
-                .environment(appModel)
-                .onAppear {
-                    appModel.immersiveSpaceState = .open
-                }
-                .onDisappear {
-                    appModel.immersiveSpaceState = .closed
-                }
+        WindowGroup(id: "MyWindow", for: String.self) { $text in
+            if let text = text {
+                MyWindowView(text: text)
+            } else {
+                MyWindowView(text: "Unknown")
+            }
         }
-        .immersionStyle(selection: .constant(.mixed), in: .mixed)
+        
      }
 }

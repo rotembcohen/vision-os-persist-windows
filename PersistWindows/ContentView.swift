@@ -10,21 +10,20 @@ import RealityKit
 import RealityKitContent
 
 struct ContentView: View {
-
+    @Environment(\.openWindow) private var openWindow
+    
+    @State var text: String = ""
     var body: some View {
-        VStack {
-            Model3D(named: "Scene", bundle: realityKitContentBundle)
-                .padding(.bottom, 50)
-
-            Text("Hello, world!")
-
-            ToggleImmersiveSpaceButton()
+        VStack (alignment: .center) {
+            TextField("Enter Title", text: $text)
+                .textFieldStyle(.roundedBorder)
+                .frame(width:300)
+            Button {
+                openWindow(id:"MyWindow", value: text)
+            } label: {
+                Text("Open Window")
+            }
         }
         .padding()
     }
-}
-
-#Preview(windowStyle: .automatic) {
-    ContentView()
-        .environment(AppModel())
 }

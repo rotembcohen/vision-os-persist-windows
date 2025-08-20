@@ -10,12 +10,23 @@ import SwiftUI
 @main
 struct PersistWindowsApp: App {
 
-    @State private var appModel = AppModel()
+    @StateObject private var appModel = AppModel()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(appModel)
+                .environmentObject(appModel)
+                .onAppear {
+                    // Restore windows after appModel is initialized
+                    DispatchQueue.main.async {
+                        for text in appModel.openWindows {
+                            if !text.isEmpty {
+                                // Use NotificationCenter to trigger window opening
+                                NotificationCenter.default.post(name: .restoreWindow, object: text)
+                            }
+                        }
+                    }
+                }
         }
 
         WindowGroup(id: "MyWindow", for: String.self) { $text in
@@ -25,6 +36,9 @@ struct PersistWindowsApp: App {
                 MyWindowView(text: "Unknown")
             }
         }
-        
-     }
+    }
+}
+
+extension Notification.Name {
+    static let restoreWindow = Notification.Name("restoreWindow")
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ToggleImmersiveSpaceButton: View {
 
-    @Environment(AppModel.self) private var appModel
+    @EnvironmentObject private var appModel: AppModel
 
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
@@ -51,8 +51,7 @@ struct ToggleImmersiveSpaceButton: View {
         } label: {
             Text(appModel.immersiveSpaceState == .open ? "Hide Immersive Space" : "Show Immersive Space")
         }
-        .disabled(appModel.immersiveSpaceState == .inTransition)
-        .animation(.none, value: 0)
-        .fontWeight(.semibold)
+    .disabled(appModel.immersiveSpaceState == .inTransition)
+    .fontWeight(.semibold)
     }
 }
